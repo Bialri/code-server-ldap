@@ -1,0 +1,71 @@
+version: '3.7'
+
+services:
+  code:
+    build: "vscode/."
+    expose:
+      - "8080"
+    volumes:
+      - ./vscode/kardasov.ed:/home/coder
+    depends_on:
+      - registry
+
+  code2:
+    build: "vscode/."
+    expose:
+      - "8080"
+    volumes:
+      - ./vscode/elizarev.ds:/home/coder
+    depends_on:
+      - registry
+
+  registry:
+    build: "vscode/registry/."
+    volumes:
+      - ./vscode/extentions:/extentions
+    expose:
+      - 3100
+
+  web:
+    image: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - code
+
+
+  auth:
+    build: "auth/."
+    expose:
+      - "8000"
+
+
+
+  openldap:
+    image: osixia/openldap:latest
+    environment:
+      LDAP_BASE_DN: "dc=localhost"
+      LDAP_ORGANISATION: "My org"
+      LDAP_DOMAIN: "localhost"
+      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_TLS: "false"             # deactivate TLS for the LDAP server
+    volumes:
+      - ./ldap/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/50-bootstrap.ldif
+    ports:
+      - "389:389"
+    command: --copy-service
+    restart: unless-stopped
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:latest
+    container_name: phpldapadmin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: openldap
+      PHPLDAPADMIN_HTTPS: "false"   # deactivate HTTPS
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+    depends_on:
+      - openldap

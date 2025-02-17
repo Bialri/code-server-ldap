@@ -1,0 +1,64 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>code-server login</title>
+
+    <link href="/global.css" rel="stylesheet" />
+    <link href="/login.css" rel="stylesheet" />
+    <meta id="coder-options" data-settings="{&quot;base&quot;:&quot;.&quot;,&quot;csStaticBase&quot;:&quot;./_static&quot;,&quot;codeServerVersion&quot;:&quot;4.96.4&quot;}" />
+  </head>
+  <body>
+    <div class="center-container">
+      <div class="card-box">
+        <div class="header">
+          <h1 class="main">Welcome to code-server</h1>
+          <div class="sub">Please log in below. Check the config file at &#x2F;home&#x2F;coder&#x2F;.config&#x2F;code-server&#x2F;config.yaml for the password.</div>
+        </div>
+        <div class="content">
+          <form class="login-form" method="post">
+            <input id="base" type="hidden" name="base" value="." />
+            <input id="href" type="hidden" name="href" value="" />
+            <div class="field">
+              <input id="username_field" required class="password" type="text" placeholder="USERNAME" name="username" />
+            </div>
+
+            <div style="margin-top: 20px" class="field">
+              <input
+                required
+                autofocus
+                class="password"
+                type="password"
+                placeholder="PASSWORD"
+                name="password"
+                autocomplete="current-password"
+              />
+            </div>
+            <input style="margin-top: 10px" class="submit -button" value="Login" type="submit" />
+            <div class="error" style="text-align: center">
+              Invalid credentials. Please try again.
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      let params = new URLSearchParams(document.location.search);
+      let error = params.get("error");
+      let username = params.get("username");
+      const errorElement = document.querySelector(".error");
+        if (errorElement) {
+            errorElement.style.display = error ? "block" : "none";
+        }
+      if (username){
+       const usernameField = document.getElementById("username_field");
+       usernameField.value = username;
+      }
+
+    </script>
+  </body>
+</html>

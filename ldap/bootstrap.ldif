@@ -1,0 +1,32 @@
+# admin user
+dn: cn=admin,dc=localhost
+changetype: add
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+userPassword: adminpassword
+description: LDAP Administrator
+
+dn: cn=kardasov.ed,dc=localhost
+changetype: add
+objectClass: inetOrgPerson
+cn: kardasov.ed
+sn: kardasov
+uid: kardasov.ed
+userPassword: !Qpmze3r4t5y6
+
+# organisational unit for IT department
+dn: ou=IT,dc=localhost
+changetype: add
+objectClass: organizationalUnit
+ou: IT
+
+# user: John Doe for unit IT department
+dn: uid=johndoe,ou=IT,dc=localhost
+changetype: add
+objectClass: inetOrgPerson
+cn: John Doe
+sn: Doe
+uid: johndoe
+mail: johndoe@example.org
+userPassword: password123
