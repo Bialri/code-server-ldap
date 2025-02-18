@@ -1,7 +1,10 @@
 FROM debian:12
 
 RUN adduser --disabled-password --gecos "" coder
-
+RUN apt update
+RUN apt install -y python3.11 python3-pip parallel
+RUN pip install --break-system-packages psutil scapy pandas requests pyyaml requests
+COPY network_usage.py /code/
 COPY code-server-4.96.4-linux-arm64.tar.gz /code/
 
 
